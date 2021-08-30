@@ -43,8 +43,7 @@ void verify_result(int *matrix, int *result, int *mask, int N) {
   for(int y = 0; y < N; y++) {
     for(int x = 0; x < N; x++) {
 
-      temp = 0;
-      
+      temp = 0; 
       for (int i = 0; i < MASK_DIM; i++) {
         o_y = y - MASK_OFFSET + i; 
         for (int j = 0; j < MASK_DIM; j++) {  
@@ -58,7 +57,6 @@ void verify_result(int *matrix, int *result, int *mask, int N) {
       }
 
       assert(result[N * y + x] == temp);
-
     }
   }
 
