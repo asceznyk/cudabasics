@@ -48,12 +48,12 @@ int main() {
   int bytes_n = sizeof(int) * N * N;
   int bytes_m = sizeof(int) * MASK_DIM * MASK_DIM;
 
-  int matrix = new int[N * N];
+  int *matrix = new int[N * N];
   init_matrix(matrix, N);
 
-  int result = new int[N * N]; 
+  int *result = new int[N * N]; 
 
-  int h_mask = new int[MASK_DIM * MASK_DIM];
+  int *h_mask = new int[MASK_DIM * MASK_DIM];
   init_matrix(h_mask, MASK_DIM);
 
   int *d_matrix, *d_result;
