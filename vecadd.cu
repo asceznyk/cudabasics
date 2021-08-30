@@ -13,7 +13,7 @@ void init_array(int arr[], int m) {
     arr[i] = rand() % 100;
 }
 
-void add_array(int a[], int b[], int m[]) {
+void add_array(int a[], int b[], int m) {
   for (int i = 0; i < m; i++)
     b[i] = a[i] + b[i];
 }
