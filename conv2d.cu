@@ -9,8 +9,8 @@
 __constant__ int mask[7 * 7];
 
 __global__ void conv2d(int *matrix, int *result, int N) {
-  int y = blockIdx.y + blockDim.y + threadIdx.y; //index y w.r.t grid_dim (i.e 64x64)
-  int x = blockIdx.x + blockDim.x + threadIdx.x; //index x w.r.t block_dim (i,e 16x16)
+  int y = blockIdx.y + blockDim.y + threadIdx.y; 
+  int x = blockIdx.x + blockDim.x + threadIdx.x; 
 
   int s_y = y - MASK_OFFSET;
   int s_x = x - MASK_OFFSET;
@@ -66,8 +66,8 @@ void verify_result(int *matrix, int *result, int *mask, int N) {
 int main() {
   int N = 1 << 10;
 
-  int bytes_n = sizeof(int) * N * N;
-  int bytes_m = sizeof(int) * MASK_DIM * MASK_DIM;
+  size_t bytes_n = sizeof(int) * N * N;
+  size_t bytes_m = sizeof(int) * MASK_DIM * MASK_DIM;
 
   int *matrix = new int[N * N];
   init_matrix(matrix, N);
@@ -95,10 +95,10 @@ int main() {
 
   verify_result(matrix, result, h_mask, N);
 
+  std::cout << "COMPLETED SUCCESSFULLY! \n";
+
   delete[] matrix; delete[] result; delete[] h_mask;
   cudaFree(d_matrix); cudaFree(d_result);
-
-  std::cout << "COMPLETED SUCCESSFULLY! \n";
 
   return 0;
 }
