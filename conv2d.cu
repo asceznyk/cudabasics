@@ -80,7 +80,7 @@ int main() {
   int *d_matrix, *d_result;
   cudaMalloc(&d_matrix, bytes_n); cudaMalloc(&d_result, bytes_n);
 
-  cudaMemcpy(d_matrix, matrix, bytes_m, cudaMemcpyHostToDevice);
+  cudaMemcpy(d_matrix, matrix, bytes_n, cudaMemcpyHostToDevice);
   cudaMemcpyToSymbol(mask, h_mask, bytes_m);
 
   int n_threads = 16;
