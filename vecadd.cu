@@ -14,7 +14,7 @@ void init_array(int arr[], int m) {
 }
 
 void add_array(int a[], int b[], int m[]) {
-  for (int i = 0; i < m; i ++)
+  for (int i = 0; i < m; i++)
     b[i] = a[i] + b[i];
 }
 
