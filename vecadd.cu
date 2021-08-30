@@ -19,7 +19,7 @@ void add_array(int a[], int b[], int m) {
 }
 
 int main() {
-  int n = 10;
+  int n = 1 << 10; //2^10 = 1024 elements
   int *a = new int[n];
   int *b = new int[n];
 
