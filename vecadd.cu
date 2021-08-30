@@ -3,34 +3,40 @@
 #include <iostream>
 #include <vector>
 
-void print_array(int arr[], int m) {
+void print_array(std::vector<int> &arr, int m) {
   for (int i = 0; i < m; i++)
     printf("%d, ", arr[i]);
 }
 
-void init_array(int arr[], int m) {
+void init_array(std::vector<int> &arr, int m) {
   for (int i = 0; i < m; i++)
-    arr[i] = rand() % 100;
+    arr.push_back(rand() % 100);
 }
 
-void add_array(int a[], int b[], int m) {
-  for (int i = 0; i < m; i++)
-    b[i] = a[i] + b[i];
+__global__ void add_array(const int *__restrict a, const int *__restrict b,
+                          int *__restrict c, int N) {
+  int i = blockIdx.x * blockDim.x + threadIdx.x;
+  if(i < N) c[i] = a[i] + b[i];
 }
 
 int main() {
-  int n = 1 << 10; //2^10 = 1024 elements
-  int *a = new int[n];
-  int *b = new int[n];
+  constexpr int N = 1 << 16; //2^16 = 65536 elements
+  constexpr size_t bytes = sizeof(int) * N; 
 
-  init_array(a, n);
-  init_array(b, n);
+  std::vector<int> a; a.reserve(N);
+  std::vector<int> b; b.reserve(N);
+  std::vector<int> c; c.reserve(N);
 
-  print_array(a, n);
+  init_array(a, N); init_array(b, N);
+
+  int *d_a, *d_b, *d_c;
+  cudaMalloc(&d_a, bytes); cudaMalloc(&d_b, bytes); cudaMalloc(&d_c, bytes);
+
+  cudaMemcpy(d_a, a, bytes, cudaMemcpyHostToDevice);
+  cudaMemcpy(d_b, b, bytes, cudaMemcpyHostToDevice);
+
+  print_array(a, N);
   printf("\n");
-  print_array(b, n);
-  printf("\n");
-  add_array(a, b, n);
-  print_array(b, n);
+  print_array(b, N);
 }
 
