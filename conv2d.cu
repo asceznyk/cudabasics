@@ -72,7 +72,7 @@ int main() {
 
   cudaMemcpy(result, d_result, bytes_m, cudaMemcpyDeviceToHost);
 
-  delete matrix[]; delete result[]; delete h_mask[];
+  delete[] matrix; delete[] result; delete[] h_mask;
   cudaFree(d_matrix); cudaFree(d_result);
 
   return 0;
