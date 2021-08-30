@@ -91,7 +91,7 @@ int main() {
 
   conv2d<<<grid_dim, block_dim>>>(d_matrix, d_result, N);
 
-  cudaMemcpy(result, d_result, bytes_m, cudaMemcpyDeviceToHost);
+  cudaMemcpy(result, d_result, bytes_n, cudaMemcpyDeviceToHost);
 
   verify_result(matrix, result, h_mask, N);
 
