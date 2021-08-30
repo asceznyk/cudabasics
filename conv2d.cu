@@ -62,7 +62,7 @@ void verify_result(int *matrix, int *result, int *mask, int N) {
     }
   }
 
-  print("result[%d] = %d == %d = temp \n", N-1, result[N-1], temp);
+  printf("result[%d] = %d == %d = temp \n", N-1, result[N-1], temp);
 }
 
 int main() {
