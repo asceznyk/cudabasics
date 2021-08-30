@@ -68,7 +68,7 @@ int main() {
   dim3 block_dim(n_threads, n_threads);
   dim3 grid_dim(n_blocks, n_blocks);
 
-  conv2d<<grid_dim, block_dim>>(d_matrix, d_result, N);
+  conv2d<<<grid_dim, block_dim>>>(d_matrix, d_result, N);
 
   cudaMemcpy(result, d_result, bytes_m, cudaMemcpyDeviceToHost);
 
