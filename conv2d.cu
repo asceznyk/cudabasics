@@ -19,7 +19,7 @@ __global__ void conv2d(int *matrix, int *result, int N) {
   for (int i = 0; i < MASK_DIM; i++) {
     for (int j = 0; j < MASK_DIM; j++) {
       if((s_y + i) >= 0 && (s_y + i) < N) {
-        if((s_x + j) >=0 && (s_x + j) < N) {
+        if((s_x + j) >= 0 && (s_x + j) < N) {
           temp += matrix[N * (s_y + i) + (s_x + j)] * mask[MASK_DIM * i + j];
         }
       }
@@ -48,7 +48,7 @@ void verify_result(int *matrix, int *result, int *mask, int N) {
       for (int i = 0; i < MASK_DIM; i++) {
         o_y = y - MASK_OFFSET + i; 
         for (int j = 0; j < MASK_DIM; j++) {  
-          o_x = y - MASK_OFFSET + j;
+          o_x = x - MASK_OFFSET + j;
           if(o_y >= 0 && o_y < N) {
             if(o_x >=0 && o_x < N) {
               temp += matrix[N * o_y + o_x] * mask[MASK_DIM * i + j];
