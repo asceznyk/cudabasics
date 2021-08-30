@@ -32,8 +32,8 @@ int main() {
   int *d_a, *d_b, *d_c;
   cudaMalloc(&d_a, bytes); cudaMalloc(&d_b, bytes); cudaMalloc(&d_c, bytes);
 
-  cudaMemcpy(d_a, a, bytes, cudaMemcpyHostToDevice);
-  cudaMemcpy(d_b, b, bytes, cudaMemcpyHostToDevice);
+  cudaMemcpy(d_a, a.data(), bytes, cudaMemcpyHostToDevice);
+  cudaMemcpy(d_b, b.data(), bytes, cudaMemcpyHostToDevice);
 
   print_array(a, N);
   printf("\n");
