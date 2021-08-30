@@ -9,8 +9,8 @@
 __constant__ int mask[7 * 7];
 
 __global__ void conv2d(int *matrix, int *result, int N) {
-  int y = blockIdx.y + blockDim.y + threadIdx.y; 
-  int x = blockIdx.x + blockDim.x + threadIdx.x; 
+  int y = blockIdx.y * blockDim.y + threadIdx.y; 
+  int x = blockIdx.x * blockDim.x + threadIdx.x; 
 
   int s_y = y - MASK_OFFSET;
   int s_x = x - MASK_OFFSET;
