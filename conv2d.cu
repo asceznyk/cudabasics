@@ -37,9 +37,30 @@ void init_matrix(int *m, int n) {
   }
 }
 
-void verify_result(int *matrix, int *result, int n) {
-  int offset_y; 
-  int offset_x;
+void verify_result(int *matrix, int *result, int *mask, int N) {
+  int temp, o_y, o_x;
+  
+  for(int y = 0; y < N; y++) {
+    for(int x = 0; x < N; x++) {
+
+      temp = 0;
+      
+      for (int i = 0; i < MASK_DIM; i++) {
+        o_y = y - MASK_OFFSET + i; 
+        for (int j = 0; j < MASK_DIM; j++) {  
+          o_x = y - MASK_OFFSET + j;
+          if(o_y >= 0 && o_y < N) {
+            if(o_x >=0 && o_x < N) {
+              temp += matrix[N * o_y + o_x] * mask[MASK_DIM * i + j];
+            }
+          }
+        }
+      }
+
+      assert(result[N * y + x] == temp)
+
+    }
+  }
 }
 
 int main() {
@@ -72,8 +93,12 @@ int main() {
 
   cudaMemcpy(result, d_result, bytes_m, cudaMemcpyDeviceToHost);
 
+  verify_result(matrix, result, h_mask, N);
+
   delete[] matrix; delete[] result; delete[] h_mask;
   cudaFree(d_matrix); cudaFree(d_result);
+
+  std::cout << "COMPLETED SUCCESSFULLY! \n";
 
   return 0;
 }
