@@ -57,7 +57,7 @@ void verify_result(int *matrix, int *result, int *mask, int N) {
         }
       }
 
-      assert(result[N * y + x] == temp)
+      assert(result[N * y + x] == temp);
 
     }
   }
