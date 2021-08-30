@@ -3,9 +3,10 @@
 #include <iostream>
 #include <vector>
 
-void print_array(std::vector<int> &arr, int m) {
-  for (int i = 0; i < m; i++)
-    printf("%d, ", arr[i]);
+__global__ void add_array(const int *__restrict a, const int *__restrict b,
+                          int *__restrict c, int N) {
+  int i = blockIdx.x * blockDim.x + threadIdx.x;
+  if(i < N) c[i] = a[i] + b[i];
 }
 
 void init_array(std::vector<int> &arr, int m) {
@@ -16,12 +17,6 @@ void init_array(std::vector<int> &arr, int m) {
 void verify_result(std::vector<int> &a, std::vector<int> &b, std::vector<int> &c) {
   for (int i = 0; i < a.size(); i++) 
     assert(c[i] == a[i] + b[i]);
-}
-
-__global__ void add_array(const int *__restrict a, const int *__restrict b,
-                          int *__restrict c, int N) {
-  int i = blockIdx.x * blockDim.x + threadIdx.x;
-  if(i < N) c[i] = a[i] + b[i];
 }
 
 int main() {
@@ -40,8 +35,8 @@ int main() {
   cudaMemcpy(d_a, a.data(), bytes, cudaMemcpyHostToDevice);
   cudaMemcpy(d_b, b.data(), bytes, cudaMemcpyHostToDevice);
 
-  n_threads = 1024;
-  n_blocks = (N + n_threads - 1) / n_threads;
+  int n_threads = 1 << 10; //2^10 = 1024 threads
+  int n_blocks = (N + n_threads - 1) / n_threads;
 
   add_array<<<n_blocks, n_threads>>>(d_a, d_b, d_c, N);
 
@@ -58,4 +53,3 @@ int main() {
   
   return 0;
 }
-
