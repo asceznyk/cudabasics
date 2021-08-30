@@ -5,7 +5,7 @@
 
 void print_array(int arr[], int m) {
   for (int i = 0; i < m; i++)
-    printf("%d", arr[i]);
+    printf("%d, ", arr[i]);
 }
 
 void init_array(int arr[], int m) {
