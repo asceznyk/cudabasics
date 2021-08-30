@@ -13,6 +13,11 @@ void init_array(std::vector<int> &arr, int m) {
     arr.push_back(rand() % 100);
 }
 
+void verify_result(std::vector<int> &a, std::vector<int> &b, std::vector<int> &c) {
+  for (int i = 0; i < a.size(); i++) 
+    assert(c[i] == a[i] + b[i]);
+}
+
 __global__ void add_array(const int *__restrict a, const int *__restrict b,
                           int *__restrict c, int N) {
   int i = blockIdx.x * blockDim.x + threadIdx.x;
@@ -35,8 +40,22 @@ int main() {
   cudaMemcpy(d_a, a.data(), bytes, cudaMemcpyHostToDevice);
   cudaMemcpy(d_b, b.data(), bytes, cudaMemcpyHostToDevice);
 
-  print_array(a, N);
-  printf("\n");
-  print_array(b, N);
+  n_threads = 1024;
+  n_blocks = (N + n_threads - 1) / n_threads;
+
+  add_array<<<n_blocks, n_threads>>>(d_a, d_b, d_c, N);
+
+  cudaMemcpy(c.data(), d_c, bytes, cudaMemcpyDeviceToHost);
+
+  verify_result(a, b, c);
+
+  cudaFree(d_a); cudaFree(d_b); cudaFree(d_c);
+
+  std::cout << "COMPLETED SUCCESSFULLY! \n";
+
+  int out = a[0] + b[0];
+  printf("for example a[0] + b[0] = %d and c[0] = %d; \n", out, c[0]);
+  
+  return 0;
 }
 
