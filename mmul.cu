@@ -11,7 +11,7 @@ void print_array(int *m, int l) {
 void init_matrix(int *m, int y, int x) {
   for (int i = 0; i < y; i++) {
     for (int j = 0; j < x; j++) {
-      m[i * y + j] = 1; //rand() % 100;
+      m[i * (y+1) + j] = 1; //rand() % 100;
     }
   }
 }
