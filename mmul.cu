@@ -5,6 +5,7 @@
 void print_array(int *m, int l) {
   for(int i = 0; i < l; i ++)
     printf("%d, ", m[i]);
+  printf("\n");
 }
 
 void init_matrix(int *m, int y, int x) {
