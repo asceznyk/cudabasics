@@ -8,11 +8,9 @@ void print_array(int *m, int l) {
   printf("\n");
 }
 
-void init_matrix(int *m, int y, int x) {
-  for (int i = 0; i < y; i++) {
-    for (int j = 0; j < x; j++) {
-      m[i * (y+1) + j] = 1; //rand() % 100;
-    }
+void init_matrix(int *m, int l) {
+  for (int i = 0; i < l; i++) {
+    m[i] = 1; //rand() % 100;
   }
 }
 
@@ -37,8 +35,8 @@ int main() {
   int *b = new int[N * M];
   int *c = new int[M * M];
 
-  init_matrix(a, M, N);
-  init_matrix(b, N, M);
+  init_matrix(a, M * N);
+  init_matrix(b, N * M);
 
   matmul(a, b, c, M, N);
 
