@@ -10,7 +10,7 @@ void print_array(int *m, int l) {
 void init_matrix(int *m, int y, int x) {
   for (int i = 0; i < y; i++) {
     for (int j = 0; j < x; j++) {
-      m[n * i + j] = 1; //rand() % 100;
+      m[i * y + j] = 1; //rand() % 100;
     }
   }
 }
@@ -18,7 +18,7 @@ void init_matrix(int *m, int y, int x) {
 void matmul(int *a, int *b, int *c, int m, int n) {
   for(int i = 0; i < m; i++) {
     for(int j = 0; j < m; j++) { 
-      for(int x = 0; x < n; x++) {
+      for(int k = 0; k < n; k++) {
         c[i * m + j] += a[i * m + k] * b[k + j * m] //c[i][j] = a[i][k] * b[k][j]
       }
     }
@@ -41,9 +41,9 @@ int main() {
 
   matmul(a, b, c, M, N);
 
-  print_array(a);
-  print_array(b);
-  print_array(c);
+  print_array(a, M * N);
+  print_array(b, N * M);
+  print_array(c, M * M);
 
   return 0;
 }
