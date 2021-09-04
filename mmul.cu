@@ -75,7 +75,7 @@ int main() {
   //int w_threads = N;
   //int n_blocks = (n_ops + n_threads - 1) / n_threads;
 
-  dim3 block_dim(L, N);
+  dim3 block_dim(N, L);
   dim3 grid_dim(1, 1);
 
   matmul2d<<<grid_dim, block_dim>>>(d_a, d_b, d_c, M, N);
