@@ -22,7 +22,7 @@ __global__ void matmul2d(int *a, int *b, int *c, int m, int n) {
   int i = blockIdx.y * blockDim.y + threadIdx.y; 
   int j = blockIdx.x * blockDim.x + threadIdx.x;
 
-  printf("%d, %d \n", blockDim.y, blockDim.x);
+  //printf("%d, %d \n", blockDim.y, blockDim.x);
   
   int temp = 0;
   for (int k = 0; k < m; k++) {
@@ -39,7 +39,7 @@ void verify_result(int *a, int *b, int *c, int l, int m, int n) {
       for(int k = 0; k < m; k++) {
         temp += a[i * m + k] * b[k * n + j]; //c[i][j] += a[i][k] * b[k][j]
       }
-      printf("%d, %d, %d \n", i, j, temp);
+      //printf("%d, %d, %d \n", i, j, temp);
       assert(c[i * n + j] == temp); 
     }
   }
@@ -78,9 +78,9 @@ int main() {
   matmul2d<<<grid_dim, block_dim>>>(d_a, d_b, d_c, M, N);
   cudaMemcpy(c, d_c, bytes_c, cudaMemcpyDeviceToHost); 
 
-  print_matrix(a, L, M);
-  print_matrix(b, M, N);
-  print_matrix(c, L, N);
+  //print_matrix(a, L, M);
+  //print_matrix(b, M, N);
+  //print_matrix(c, L, N);
 
   verify_result(a, b, c, L, M, N);
 
