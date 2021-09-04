@@ -46,9 +46,9 @@ int main() {
   //a of size l * m and b of size m * n
   //a @ b is of size l * n
 
-  int L = 1 << 9; //512
-  int M = 1 << 8; //256
-  int N = 1 << 10; //1024
+  int L = 3;//1 << 9; //512
+  int M = 2;//1 << 8; //256
+  int N = 3;//1 << 10; //1024
 
   size_t bytes_a = sizeof(int) * L * M;
   size_t bytes_b = sizeof(int) * M * N;
