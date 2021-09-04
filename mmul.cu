@@ -43,6 +43,8 @@ void verify_result(int *a, int *b, int *c, int l, int m, int n) {
       assert(c[i * n + j] == temp); 
     }
   }
+
+  printf("result[%d] = %d == %d = temp \n", l * n - 1, c[l * n - 1], temp);
 }
 
 int main() {
