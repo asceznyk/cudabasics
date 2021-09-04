@@ -37,7 +37,7 @@ void verify_result(int *a, int *b, int *c, int l, int m, int n) {
       for(int k = 0; k < m; k++) {
         temp += a[i * m + k] * b[k * n + j]; //c[i][j] += a[i][k] * b[k][j]
       }
-      assert(temp == result[i * n + j]); 
+      assert(temp == c[i * n + j]); 
     }
   }
 }
