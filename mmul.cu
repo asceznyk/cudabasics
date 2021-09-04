@@ -18,12 +18,26 @@ void init_matrix(int *m, int l) {
   }
 }
 
-void matmul(int *a, int *b, int *c, int l, int m, int n) {
+__global__ void matmul2d(int *a, int *b, int *c, int m, int n) {
+  int y = blockIdx.y * blockDim.y + threadIdx.y; 
+  int x = blockIdx.x * blockDim.x + threadIdx.x;
+  
+  int temp = 0;
+  for (int k = 0; k < m; k++) {
+    temp += a[y * m + k] * b[k * n + x];
+  }
+  c[y * n + x] = temp;
+}
+
+void verify_result(int *a, int *b, int *c, int l, int m, int n) {
+  int temp = 0;
   for(int i = 0; i < l; i++) {
-    for(int j = 0; j < n; j++) { 
+    for(int j = 0; j < n; j++) {
+      temp = 0;
       for(int k = 0; k < m; k++) {
-        c[i * n + j] += a[i * m + k] * b[k * n + j]; //c[i][j] += a[i][k] * b[k][j]
+        temp += a[i * m + k] * b[k * n + j]; //c[i][j] += a[i][k] * b[k][j]
       }
+      assert(temp == result[i * n + j]); 
     }
   }
 }
@@ -32,9 +46,13 @@ int main() {
   //a of size l * m and b of size m * n
   //a @ b is of size l * n
 
-  int L = 3; //512
-  int M = 2; //256
-  int N = 3; //1024
+  int L = 3; //1 << 9; //512
+  int M = 2; //1 << 8; //256
+  int N = 3; //1 << 10; //1024
+
+  size_t bytes_a = sizeof(int) * L * M;
+  size_t bytes_b = sizeof(int) * M * N;
+  size_t bytes_c = sizeof(int) * L * N;
 
   int *a = new int[L * M];
   int *b = new int[M * N];
@@ -43,11 +61,29 @@ int main() {
   init_matrix(a, L * M);
   init_matrix(b, M * N);
 
-  matmul(a, b, c, L, M, N);
+  int *d_a, *d_b, *d_c;
+  cudaMalloc(&d_a, bytes_a); cudaMalloc(&d_b, bytes_b); cudaMalloc(&d_c, bytes_c);
+  cudaMemcpy(d_a, a, bytes_a, cudaMemcpyHostToDevice);
+  cudaMemcpy(d_b, b, bytes_b, cudaMemcpyHostToDevice);
+  cudaMemcpy(d_c, c, bytes_c, cudaMemcpyHostToDevice);
+
+  int n_ops = L * N;
+  int n_threads = 32;
+  int n_blocks = (n_ops + n_threads - 1) / n_threads;
+
+  dim3 block_dim(n_threads, n_threads);
+  dim3 grid_dim(n_blocks, n_blocks);
+
+  matmul2d<<<grid_dim, block_dim>>>(d_a, d_b, d_c, M, N);
+
+  cudaMemcpy(c, d_c, bytes_c, cudaMemcpyDeviceToHost);
 
   print_matrix(a, L, M);
   print_matrix(b, M, N);
   print_matrix(c, L, N);
+
+  delete[] a; delete[] b; delete[] c;
+  cudaFree(d_a); cudaFree(d_b); cudaFree(d_c);
 
   return 0;
 }
