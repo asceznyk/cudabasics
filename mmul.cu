@@ -14,7 +14,7 @@ void print_matrix(int *m, int y, int x) {
 
 void init_matrix(int *m, int l) {
   for (int i = 0; i < l; i++) {
-    m[i] = 10; //rand() % 100;
+    m[i] = rand() % 100;
   }
 }
 
