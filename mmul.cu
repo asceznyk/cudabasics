@@ -21,6 +21,8 @@ void init_matrix(int *m, int l) {
 __global__ void matmul2d(int *a, int *b, int *c, int m, int n) {
   int i = blockIdx.y * blockDim.y + threadIdx.y; 
   int j = blockIdx.x * blockDim.x + threadIdx.x;
+
+  printf("%d, %d \n", blockDim.y, blockDim.x);
   
   int temp = 0;
   for (int k = 0; k < m; k++) {
