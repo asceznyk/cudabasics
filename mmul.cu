@@ -32,7 +32,7 @@ int main() {
   //a of size l * m and b of size m * n
   //a @ b is of size l * n
 
-  int L = 4; //512
+  int L = 3; //512
   int M = 2; //256
   int N = 3; //1024
 
