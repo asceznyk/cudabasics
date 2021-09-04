@@ -42,7 +42,6 @@ void verify_result(int *matrix, int *result, int *mask, int N) {
   
   for(int y = 0; y < N; y++) {
     for(int x = 0; x < N; x++) {
-
       temp = 0; 
       for (int i = 0; i < MASK_DIM; i++) {
         o_y = y - MASK_OFFSET + i; 
