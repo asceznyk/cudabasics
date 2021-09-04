@@ -37,6 +37,7 @@ void verify_result(int *a, int *b, int *c, int l, int m, int n) {
       for(int k = 0; k < m; k++) {
         temp += a[i * m + k] * b[k * n + j]; //c[i][j] += a[i][k] * b[k][j]
       }
+      printf("%d, %d", c[i * n + j], temp);
       assert(c[i * n + j] == temp); 
     }
   }
@@ -68,14 +69,19 @@ int main() {
   cudaMemcpy(d_c, c, bytes_c, cudaMemcpyHostToDevice);
 
   int n_ops = L * N;
-  int n_threads = 32;
+  int n_threads = 1; //32
   int n_blocks = (n_ops + n_threads - 1) / n_threads;
 
   dim3 block_dim(n_threads, n_threads);
   dim3 grid_dim(n_blocks, n_blocks);
 
   matmul2d<<<grid_dim, block_dim>>>(d_a, d_b, d_c, M, N);
-  cudaMemcpy(c, d_c, bytes_c, cudaMemcpyDeviceToHost);
+  cudaMemcpy(c, d_c, bytes_c, cudaMemcpyDeviceToHost); 
+
+  print_matrix(a, L, M);
+  print_matrix(b, M, N);
+  print_matrix(c, L, N);
+
   verify_result(a, b, c, L, M, N);
 
   std::cout << "COMPLETED SUCCESSFULLY! \n";
