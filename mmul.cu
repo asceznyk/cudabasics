@@ -69,7 +69,7 @@ int main() {
   cudaMemcpy(d_c, c, bytes_c, cudaMemcpyHostToDevice);
 
   int n_ops = L * N;
-  int n_threads = 9;
+  int n_threads = 32;
   int n_blocks = (n_ops + n_threads - 1) / n_threads;
 
   dim3 block_dim(n_threads, n_threads);
