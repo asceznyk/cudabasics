@@ -82,8 +82,10 @@ int main() {
   cudaMemcpy(d_matrix, matrix, bytes_n, cudaMemcpyHostToDevice);
   cudaMemcpyToSymbol(mask, h_mask, bytes_m);
 
-  int n_threads = 16;
+  int n_threads = 256;
   int n_blocks = (N + n_threads - 1) / n_threads;
+
+  printf("%d, %d; ", n_threads, n_blocks);
 
   dim3 block_dim(n_threads, n_threads);
   dim3 grid_dim(n_blocks, n_blocks);
