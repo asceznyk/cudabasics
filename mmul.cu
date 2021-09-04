@@ -49,9 +49,9 @@ int main() {
   //a of size l * m and b of size m * n
   //a @ b is of size l * n
 
-  int L = 4;//1 << 9; //512
-  int M = 2;//1 << 8; //256
-  int N = 3;//1 << 10; //1024
+  int L = 1 << 9; //512
+  int M = 1 << 8; //256
+  int N = 1 << 10; //1024
 
   size_t bytes_a = sizeof(int) * L * M;
   size_t bytes_b = sizeof(int) * M * N;
@@ -69,14 +69,11 @@ int main() {
   cudaMemcpy(d_a, a, bytes_a, cudaMemcpyHostToDevice);
   cudaMemcpy(d_b, b, bytes_b, cudaMemcpyHostToDevice);
   cudaMemcpy(d_c, c, bytes_c, cudaMemcpyHostToDevice);
+  
+  int n_threads = 32;
 
-  //int n_ops = L * N;
-  //int h_threads = L;
-  //int w_threads = N;
-  //int n_blocks = (n_ops + n_threads - 1) / n_threads;
-
-  dim3 block_dim(N, L);
-  dim3 grid_dim(1, 1);
+  dim3 block_dim(n_threads, n_threads);
+  dim3 grid_dim(N/n_threads, L/n_threads);
 
   matmul2d<<<grid_dim, block_dim>>>(d_a, d_b, d_c, M, N);
   cudaMemcpy(c, d_c, bytes_c, cudaMemcpyDeviceToHost); 
