@@ -44,9 +44,9 @@ int main() {
 
   matmul(a, b, c, L, M, N);
 
-  print_array(a, L, M);
-  print_array(b, M, N);
-  print_array(c, L, N);
+  print_matrix(a, L, M);
+  print_matrix(b, M, N);
+  print_matrix(c, L, N);
 
   return 0;
 }
