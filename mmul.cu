@@ -68,13 +68,13 @@ int main() {
   cudaMemcpy(d_b, b, bytes_b, cudaMemcpyHostToDevice);
   cudaMemcpy(d_c, c, bytes_c, cudaMemcpyHostToDevice);
 
-  int n_ops = L * N;
+  //int n_ops = L * N;
   //int h_threads = L;
   //int w_threads = N;
   //int n_blocks = (n_ops + n_threads - 1) / n_threads;
 
-  dim3 block_dim(L/4, N/3);
-  dim3 grid_dim(L, N);
+  dim3 block_dim(L, N);
+  dim3 grid_dim(1, 1);
 
   matmul2d<<<grid_dim, block_dim>>>(d_a, d_b, d_c, M, N);
   cudaMemcpy(c, d_c, bytes_c, cudaMemcpyDeviceToHost); 
