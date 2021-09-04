@@ -22,7 +22,7 @@ void matmul(int *a, int *b, int *c, int l, int m, int n) {
   for(int i = 0; i < l; i++) {
     for(int j = 0; j < n; j++) { 
       for(int k = 0; k < m; k++) {
-        c[i * n + j] += a[i * m + k] * b[k + j * m]; //c[i][j] += a[i][k] * b[k][j]
+        c[i * n + j] += a[i * m + k] * b[k * n + j]; //c[i][j] += a[i][k] * b[k][j]
       }
     }
   }
